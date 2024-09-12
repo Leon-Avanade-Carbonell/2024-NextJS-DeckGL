@@ -6,31 +6,74 @@ First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Creating the application
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The application was created with NextJS with the default options / configurations
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npx create-next-app@latest
+```
 
-## Learn More
+## Optional DX libraries
 
-To learn more about Next.js, take a look at the following resources:
+### prettier-eslint package and configuration
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm install --save-dev prettier-eslint
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+<details>
+<summary>Create a `.prettierrc` file</summary>
 
-## Deploy on Vercel
+```json
+{
+  "trailingComma": "es5",
+  "tabWidth": 2,
+  "semi": false,
+  "singleQuote": true
+}
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+</details>
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### ShadCN UI library
+
+Install the library
+
+```bash
+npx shadcn@latest init
+```
+
+Add the components to be used in the library
+
+```bash
+npx shadcn@latest add button input textarea select sheet
+```
+
+### Tailwind extension for prettier
+
+```bash
+npm install -D prettier prettier-plugin-tailwindcss
+```
+
+Update the `.prettierrc` file to include the plugin
+
+```json
+{
+  "plugins": ["prettier-plugin-tailwindcss"] // added
+}
+```
+
+### Update the App Layout to use grid where the body of the app uses 1fr
+
+```html
+<body>
+  <div className="grid min-h-screen grid-rows-[auto_1fr_auto]">
+    <div className="`bg-slate-500`">headers go here</div>
+    <div>{children}</div>
+    <div className="bg-slate-500">footers go here</div>
+  </div>
+</body>
+```
