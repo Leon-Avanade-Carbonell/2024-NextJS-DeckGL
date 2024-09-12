@@ -35,14 +35,14 @@ export default function RootLayout({
             }}
           >
             <div
-              className={`bg-slate-500`}
+              className={`bg-orange-500`}
               style={{ height: `${HEADER_HEIGHT}` }}
             >
-              headers go here {`${HEADER_HEIGHT}`}
+              headers go here
             </div>
             <div>{children}</div>
             <div
-              className="bg-slate-500"
+              className="bg-orange-500"
               style={{ height: `${FOOTER_HEIGHT}` }}
             >
               footers go here
