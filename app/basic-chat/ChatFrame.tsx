@@ -5,17 +5,18 @@ import { useMutation } from '@tanstack/react-query'
 import { chatAction } from './actions/chat'
 import { Textarea } from '@/components/ui/textarea'
 import { useState } from 'react'
+import Markdown from 'react-markdown'
 
 export function ChatFrame() {
   const [systemMessage, setSystemMessage] = useState('')
   const [userMessage, setUserMessage] = useState('')
   const [response, setResponse] = useState('')
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: chatAction,
     onSuccess: (data) => {
-      console.table(data)
-      setResponse(data.response)
+      console.log(data.response)
+      if (data.response) setResponse(data.response)
     },
   })
 
@@ -28,7 +29,7 @@ export function ChatFrame() {
   }
 
   return (
-    <div className="border-1 grid max-w-2xl gap-2 bg-cyan-100 p-2">
+    <div className="border-1 grid max-w-2xl gap-2 rounded-xl bg-cyan-100 p-2">
       <Textarea
         placeholder="System Message"
         value={systemMessage}
@@ -41,11 +42,18 @@ export function ChatFrame() {
         onChange={(event) => setUserMessage(event.target.value)}
       />
       <div className="flex flex-row-reverse">
-        <Button disabled={userMessage.length <= 3} onClick={() => runAction()}>
+        <Button
+          disabled={userMessage.length <= 3 || isPending}
+          onClick={() => runAction()}
+        >
           Chat
         </Button>
       </div>
-      {response.length >= 3 && <div>{response}</div>}
+      {response.length >= 3 && !isPending && (
+        <div className="grid w-full gap-4">
+          <Markdown>{response}</Markdown>
+        </div>
+      )}
     </div>
   )
 }
