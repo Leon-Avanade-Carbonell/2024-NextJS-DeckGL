@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import './globals.css'
 import { FOOTER_HEIGHT, HEADER_HEIGHT } from '@/helpers/constants'
+import AppProviders from '@/components/providers'
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -28,26 +29,28 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <body>
-          <div
-            className={`${geistSans.variable} ${geistMono.variable} grid min-h-screen antialiased`}
-            style={{
-              gridTemplateRows: `${HEADER_HEIGHT} 1fr ${FOOTER_HEIGHT}`,
-            }}
-          >
+          <AppProviders>
             <div
-              className={`bg-orange-500`}
-              style={{ height: `${HEADER_HEIGHT}` }}
+              className={`${geistSans.variable} ${geistMono.variable} grid min-h-screen antialiased`}
+              style={{
+                gridTemplateRows: `${HEADER_HEIGHT} 1fr ${FOOTER_HEIGHT}`,
+              }}
             >
-              headers go here
+              <div
+                className={`bg-orange-500`}
+                style={{ height: `${HEADER_HEIGHT}` }}
+              >
+                <div className="mx-auto w-full max-w-7xl">headers go here</div>
+              </div>
+              <div className={`mx-auto w-full max-w-7xl`}>{children}</div>
+              <div
+                className="bg-orange-500"
+                style={{ height: `${FOOTER_HEIGHT}` }}
+              >
+                <div className="mx-auto w-full max-w-7xl">footers go here</div>
+              </div>
             </div>
-            <div>{children}</div>
-            <div
-              className="bg-orange-500"
-              style={{ height: `${FOOTER_HEIGHT}` }}
-            >
-              footers go here
-            </div>
-          </div>
+          </AppProviders>
         </body>
       </body>
     </html>

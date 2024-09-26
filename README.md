@@ -16,6 +16,12 @@ The application was created with NextJS with the default options / configuration
 npx create-next-app@latest
 ```
 
+### Tanstack (useQuery) library for server actions
+
+```bash
+npm i @tanstack/react-query
+```
+
 ## Optional DX libraries
 
 ### prettier-eslint package and configuration
