@@ -9,9 +9,14 @@ import { useState } from 'react'
 export function ChatFrame() {
   const [systemMessage, setSystemMessage] = useState('')
   const [userMessage, setUserMessage] = useState('')
+  const [response, setResponse] = useState('')
 
   const { mutate } = useMutation({
     mutationFn: chatAction,
+    onSuccess: (data) => {
+      console.table(data)
+      setResponse(data.response)
+    },
   })
 
   function runAction() {
@@ -25,7 +30,12 @@ export function ChatFrame() {
   return (
     <div className="border-1 grid max-w-2xl gap-2 bg-cyan-100 p-2">
       <Textarea
-        className=""
+        placeholder="System Message"
+        value={systemMessage}
+        onChange={(event) => setSystemMessage(event.target.value)}
+      />
+
+      <Textarea
         placeholder="User Message"
         value={userMessage}
         onChange={(event) => setUserMessage(event.target.value)}
@@ -35,6 +45,7 @@ export function ChatFrame() {
           Chat
         </Button>
       </div>
+      {response.length >= 3 && <div>{response}</div>}
     </div>
   )
 }
