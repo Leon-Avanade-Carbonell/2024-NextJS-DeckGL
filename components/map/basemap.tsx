@@ -3,9 +3,11 @@
 import DeckGL from '@deck.gl/react'
 import { MapViewState } from '@deck.gl/core'
 import { FOOTER_HEIGHT, HEADER_HEIGHT } from '@/helpers/constants'
+import { Map } from 'react-map-gl/maplibre'
+import 'maplibre-gl/dist/maplibre-gl.css'
 
 // typescript
-import { BitmapLayer, TileLayer, type Layer } from 'deck.gl'
+import { type Layer } from 'deck.gl'
 
 type BaseMapProps = {
   height?: string
@@ -25,43 +27,26 @@ function MapComponent(props: BaseMapProps) {
     width = '100vw',
     layers = [] as Layer[],
   } = props
-  //   const defaultHeight = `calc(100vh - ${HEADER_HEIGHT} - ${FOOTER_HEIGHT})` // tailwind does not handle JS variables
-
-  const layer = new TileLayer({
-    id: 'TileLayer',
-    data: 'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    maxZoom: 19,
-    minZoom: 0,
-
-    renderSubLayers: (props) => {
-      const { boundingBox } = props.tile
-
-      return new BitmapLayer(props, {
-        data: undefined,
-        image: props.data,
-        bounds: [
-          boundingBox[0][0],
-          boundingBox[0][1],
-          boundingBox[1][0],
-          boundingBox[1][1],
-        ],
-      })
-    },
-    pickable: true,
-  })
-  const deckLayers: Layer[] = [layer, ...layers]
+  const deckLayers: Layer[] = [...layers]
 
   return (
     <div
-      className="relative bg-slate-300"
+      className="relative m-0 bg-slate-300 p-0"
       style={{ height: height, width: width }}
     >
       <DeckGL
         initialViewState={INITIAL_VIEW_STATE}
         controller
         layers={deckLayers}
-        style={{ height: height, width: width, position: 'absolute' }}
-      />
+        style={{ height: height, width: width }}
+      >
+        <Map
+          initialViewState={INITIAL_VIEW_STATE}
+          mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
+          // mapStyle="https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json"
+          style={{ position: 'fixed', width: width, height: height }}
+        />
+      </DeckGL>
     </div>
   )
 }

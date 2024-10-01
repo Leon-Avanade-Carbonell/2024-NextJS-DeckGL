@@ -28,30 +28,28 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <body>
-          <AppProviders>
+        <AppProviders>
+          <div
+            className={`${geistSans.variable} ${geistMono.variable} grid min-h-screen antialiased`}
+            style={{
+              gridTemplateRows: `${HEADER_HEIGHT} 1fr ${FOOTER_HEIGHT}`,
+            }}
+          >
             <div
-              className={`${geistSans.variable} ${geistMono.variable} grid min-h-screen antialiased`}
-              style={{
-                gridTemplateRows: `${HEADER_HEIGHT} 1fr ${FOOTER_HEIGHT}`,
-              }}
+              className={`bg-orange-500`}
+              style={{ height: `${HEADER_HEIGHT}` }}
             >
-              <div
-                className={`bg-orange-500`}
-                style={{ height: `${HEADER_HEIGHT}` }}
-              >
-                <div className="mx-auto w-full max-w-7xl">headers go here</div>
-              </div>
-              <div className={`mx-auto w-full max-w-7xl`}>{children}</div>
-              <div
-                className="bg-orange-500"
-                style={{ height: `${FOOTER_HEIGHT}` }}
-              >
-                <div className="mx-auto w-full max-w-7xl">footers go here</div>
-              </div>
+              <div className="mx-auto w-full max-w-7xl">headers go here</div>
             </div>
-          </AppProviders>
-        </body>
+            <div className={`w-full`}>{children}</div>
+            <div
+              className="bg-orange-500"
+              style={{ height: `${FOOTER_HEIGHT}` }}
+            >
+              <div className="mx-auto w-full max-w-7xl">footers go here</div>
+            </div>
+          </div>
+        </AppProviders>
       </body>
     </html>
   )
