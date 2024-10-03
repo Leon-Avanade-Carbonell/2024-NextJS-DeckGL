@@ -2,9 +2,9 @@ import { ChatFrame } from './ChatFrame'
 
 export default function BasicChatPage() {
   return (
-    <h1>
+    <div className="mx-auto max-w-7xl">
       Basic Chat
       <ChatFrame />
-    </h1>
+    </div>
   )
 }
