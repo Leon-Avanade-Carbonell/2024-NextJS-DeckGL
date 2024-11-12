@@ -13,6 +13,9 @@ type BaseMapProps = {
   height?: string
   width?: string
   layers?: Layer[]
+  longitude?: number
+  latitude?: number
+  zoom?: number
 }
 
 const INITIAL_VIEW_STATE: MapViewState = {
@@ -25,6 +28,9 @@ function MapComponent(props: BaseMapProps) {
   const {
     height = `calc(100vh - ${HEADER_HEIGHT} - ${FOOTER_HEIGHT})`,
     width = '100vw',
+    longitude = -122.41669,
+    latitude = 37.7853,
+    zoom = 13,
     layers = [] as Layer[],
   } = props
   const deckLayers: Layer[] = [...layers]
@@ -35,7 +41,7 @@ function MapComponent(props: BaseMapProps) {
       style={{ height: height, width: width }}
     >
       <DeckGL
-        initialViewState={INITIAL_VIEW_STATE}
+        initialViewState={{ longitude, latitude, zoom } as MapViewState}
         controller
         layers={deckLayers}
         style={{ height: height, width: width }}

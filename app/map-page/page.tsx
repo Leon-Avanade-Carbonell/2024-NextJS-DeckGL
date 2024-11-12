@@ -1,9 +1,12 @@
-import BaseMap from '@/components/map/basemap'
+import { getAllNeighborhood } from '@/db/nyc_neighborhoods'
+import NYC_Map from './_components/nyc-map'
 
-export default function MapPage() {
+export default async function MapPage() {
+  const data = await getAllNeighborhood('Manhattan')
+
   return (
     <>
-      <BaseMap />
+      <NYC_Map neighborhoods={data} />
     </>
   )
 }
