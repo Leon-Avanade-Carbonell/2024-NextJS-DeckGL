@@ -1,38 +1,22 @@
 'use client'
-import { Feature, Geometry } from 'geojson'
 import BaseMap from '@/components/map/basemap'
-import { GeoJsonLayer } from 'deck.gl'
-import { Neighborhood } from '@/db/nyc_neighborhoods'
+import { CrimeData, Neighborhood } from '@/db/nyc_neighborhoods'
+import { useCrimeLayer } from './useCrimeLayer'
 
 interface NYCMapProps {
   neighborhoods: Neighborhood[]
+  crimeData: CrimeData[]
 }
 
-type PropertiesType = {
-  name: string
-}
+export default function NYC_Map({ crimeData }: NYCMapProps) {
+  const { layer: crimeLayer } = useCrimeLayer(crimeData)
 
-export default function NYC_Map({ neighborhoods }: NYCMapProps) {
-  const geoData = neighborhoods.map((entry) => JSON.parse(entry.geojson))
-
-  console.table(geoData)
-
-  const layer = new GeoJsonLayer({
-    id: 'GeoJsonLayer',
-    data: geoData,
-
-    stroked: true,
-    filled: true,
-    pointType: 'circle+text',
-    pickable: true,
-
-    getFillColor: [160, 160, 180, 200],
-
-    getText: (f: Feature<Geometry, PropertiesType>) => f.properties.name,
-    getLineWidth: 20,
-    getPointRadius: 4,
-    getTextSize: 12,
-  })
-
-  return <BaseMap layers={[layer]} latitude={40.73061} longitude={-73.935242} />
+  return (
+    <BaseMap
+      layers={[crimeLayer]}
+      latitude={40.73061}
+      longitude={-73.935242}
+      zoom={10}
+    />
+  )
 }

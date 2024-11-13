@@ -34,3 +34,42 @@ export async function getAllBoronames() {
     throw new Error('Failed to get neighborhoods')
   }
 }
+
+export type CrimeData = {
+  neighborhood: string
+  boroname: string
+  victim_count: string
+  geojson: string
+}
+
+export async function getCrimeData(neighborhood?: string) {
+  try {
+    const query = `
+      SELECT 
+        hoods.name AS neighborhood, 
+        hoods.boroname AS boroname, 
+        COUNT(victims.num_victim) as victim_count, 
+        json_build_object(
+          'type', 'Polygon', 
+          'properties', json_build_object(
+            'id', hoods.gid,
+            'name', hoods.name,
+            'count', COUNT(victims.num_victim)
+          ),
+          'geometry', ST_AsGeoJSON(ST_Transform(hoods.geom, 4326))::json
+        )::text AS geojson 
+      FROM nyc_homicides as victims
+      JOIN nyc_neighborhoods as hoods
+      ON ST_Within(victims.geom, hoods.geom)
+      ${!!neighborhood ? `WHERE boroname='${neighborhood}'` : ''}
+      GROUP BY hoods.name, hoods.geom, hoods.boroname, hoods.gid
+      ORDER BY COUNT(victims.num_victim) ASC
+    `
+    const { rows } = await pgPool.query(query)
+
+    return rows as CrimeData[]
+  } catch (error) {
+    console.table(error)
+    throw new Error('Failed to get crimes')
+  }
+}
